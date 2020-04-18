@@ -5,6 +5,8 @@ import sys
 import os
 import pathlib
 import settings
+import tweepy
+import twitter
 
 def get_kinesis_connection():
     kinesis_object = boto3.client('kinesis', aws_access_key_id=settings.access_key_id,
@@ -31,11 +33,22 @@ def send_data_to_stream(kinesis_object):
     print('success')
 
 
+def get_twitter_Connection():
+
+    auth = tweepy.OAuthHandler(settings.twitter_consumer_key, settings.twitter_consumer_secret_key)
+    auth.set_access_token(settings.twitter_access_token, settings.twitter_access_token_secret)
+
+    api = tweepy.API(auth)
+
+    return api
+
 def main():
 
      kinesis_object = get_kinesis_connection()
 
-     send_data_to_stream(kinesis_object)
+     twitter_Connect = get_twitter_Connection()
+
+    # send_data_to_stream(kinesis_object)
 
 
 if __name__ == '__main__':
